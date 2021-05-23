@@ -29,5 +29,7 @@ int main(void)
 		printf("%d\n", ptr[i]);
 	}
 
+	free(ptr);
+
 	return 0;
 }
