@@ -3,6 +3,8 @@
 
 #include "sqlist.h"
 
+int sqlist_isempty(sqlist *me);
+
 sqlist *sqlist_create()
 {
 	sqlist *me;
@@ -35,7 +37,7 @@ int sqlist_insert(sqlist *me, int i, datatype *data)
 	if(me->last == DATASIZE - 1)
 		return -1;	
 	
-	if(i < 0 || i > me->last+1)
+	if(i < 0 || i > me->last + 1)
 		return -2;
 
 	j = me->last;
@@ -49,32 +51,60 @@ int sqlist_insert(sqlist *me, int i, datatype *data)
 	return 0;
 }
 
-#if 0
-int sqlist_delete(sqlist *, int i)
+int sqlist_delete(sqlist *me, const int i)
 {
+	int j;
 
+	if(i < 0 || i > me->last)
+		return -1;	
+	
+	for(j = i+1; j <= me->last; j++)
+		me->data[j-1] = me->data[j];
+
+//	for(j = i; j < me->last; j++)
+//		me->data[j] = me->data[j+1];
+
+	me->last--;
+
+	return 0;
 }
 
-int sqlist_find(sqlist *, datatype *)
+int sqlist_find(sqlist *me, datatype *data)
 {
+	int i;
+	if(sqlist_isempty(me) == 0) {
+		return -1;
+	}
 
+	for(i = 0; i <= me->last; i++) {
+		if(me->data[i] = *data) {
+			return i;
+		}
+	}
+
+	return -2;
 }
 
-int sqlist_empty(sqlist *)
+int sqlist_isempty(sqlist *me)
 {
+	if(me->last == -1) {
+		return -1;
+	}
 
+	return 0;
 }
 
-int sqlist_setempty(sqlist *)
+int sqlist_setempty(sqlist *me)
 {
-
+	me->last = -1;
+	return 0;
 }
 
-int sqlist_getnum(sqlist *)
+int sqlist_getnum(sqlist *me)
 {
-
+	return (me->last + 1);
 }
-#endif
+
 void sqlist_display(sqlist *me)
 {
 	int i;
@@ -94,8 +124,18 @@ int sqlist_destory(sqlist *me)
 	return 0;
 }
 
-//int sqlist_union(sqlist *, sqlist *)
-//{
-//
-//}
+int sqlist_union(sqlist *list1, sqlist *list2)
+{
+	//list1 -> 12 23 34 45 56
+	//list2 -> 78 89 56 23 10
+	int i = 0;
+
+	for(i = 0; i <= list2->last; i++) {
+		if(sqlist_find(list1, &list2->data[i]) < 0) {
+			sqlist_insert(list1, 0, &list2->data[i]);
+		}
+	}
+
+	return 0;
+}
 

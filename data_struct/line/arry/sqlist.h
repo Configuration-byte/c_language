@@ -2,8 +2,8 @@
 #define SQLIST_H__
 
 #define DATASIZE 1024
-typedef int datatype;
 
+typedef int datatype;
 typedef struct node_st {
 	datatype data[DATASIZE];
 	int last;
